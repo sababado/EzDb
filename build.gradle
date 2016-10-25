@@ -2,9 +2,29 @@ buildscript {
     repositories {
         jcenter()
     }
+    dependencies {
+        // Required plugins added to classpath to facilitate pushing to Jcenter/Bintray
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+    }
 }
 allprojects {
     repositories {
         jcenter()
     }
+}
+
+def getBintrayPwd() {
+    def env = System.getenv("bintray_apikey")
+    if (env == null) {
+        env = "${bintray_apikey}"
+    }
+    return env;
+}
+
+def getBintrayGpg() {
+    def env = System.getenv("bintray_gpg_password")
+    if (env == null) {
+        env = "${bintray_gpg_password}"
+    }
+    return env;
 }

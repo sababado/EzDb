@@ -12,6 +12,8 @@ public @interface TableName {
 
     /**
      * This can be a comma separated string to support joining on multiple tables.
+     *
+     * @return A comma separated string denoting multiple join tables.
      */
     String joinTable() default "";
 }

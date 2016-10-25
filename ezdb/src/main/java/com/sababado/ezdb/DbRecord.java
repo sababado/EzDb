@@ -20,6 +20,7 @@ public abstract class DbRecord {
      * Initializes the record with the result set's current position.
      *
      * @param resultSet Result set on the position to initialize from.
+     * @throws SQLException in the case that there might have been a database error.
      */
     public DbRecord(ResultSet resultSet) throws SQLException {
 
