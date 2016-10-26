@@ -1,0 +1,35 @@
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'ezdb'   // Has to be same as your library module name
+
+    publishedGroupId = 'com.sababado.ezdb'
+    libraryName = 'EzDb'
+    artifact = 'ezdb'     // Has to be same as your library module name
+
+    libraryDescription = 'Java library to remove all of the boilerplate associated with basic SQL tables and queries.'
+
+    // Your github repo link
+    siteUrl = 'https://github.com/sababado/EzDb'
+    gitUrl = 'https://github.com/sababado/EzDb.git'
+    githubRepository= 'sababado/EzDb'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'rat141312'
+    developerName = 'Robert Szabo'
+    developerEmail = 'robert.james.szabo@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+
+    binKey = getBintrayPwd()
+    binGpg = getBintrayGpg()
+}
+
+// Place it at the end of the file
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'
+
+//apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
