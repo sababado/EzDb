@@ -1,6 +1,7 @@
 package com.sababado.ezdb;
 
 
+import com.sababado.ezdb.models.Pub;
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;
@@ -12,13 +13,6 @@ import static org.junit.Assert.assertEquals;
  * Created by robert on 9/15/15.
  */
 public class DbHelperTest {
-    @Test
-    public void testGetTableName() {
-        String expected = "Pub";
-        String actual = DbHelper.getTableName(Pub.class).value();
-        assertEquals(expected, actual);
-    }
-
     @Test
     public void testGetColumnValue() throws NoSuchFieldException {
         Field field = Pub.class.getDeclaredField("id");
@@ -120,6 +114,18 @@ public class DbHelperTest {
 
         expected = " join First, SecondName where Name.firstId = First.id and Name.secondnameId = SecondName.id";
         actual = DbHelper.getForeignKeyClause(tableName);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetTableName() {
+        // Get easy table name
+        String expected = "Pub";
+        String actual = DbHelper.getTableName(Pub.class).value();
+        assertEquals(expected, actual);
+
+        // Get abstract table name
+        actual = new Pub().tableName;
         assertEquals(expected, actual);
     }
 }

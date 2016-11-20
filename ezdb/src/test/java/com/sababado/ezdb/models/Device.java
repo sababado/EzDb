@@ -1,5 +1,10 @@
-package com.sababado.ezdb;
+package com.sababado.ezdb.models;
 
+
+import com.sababado.ezdb.Column;
+import com.sababado.ezdb.DbHelper;
+import com.sababado.ezdb.DbRecord;
+import com.sababado.ezdb.TableName;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +14,7 @@ import java.sql.Timestamp;
  * Created by robert on 8/31/16.
  */
 @TableName("Device")
-class Device extends DbRecord {
+public class Device extends DbRecord {
     public static final String DEVICE_TOKEN = "deviceToken";
     public static final String LAST_NOTIFICATION_FAIL = "lastNotificationFail";
     public static final String KEEP_ALIVE = "keepAlive";

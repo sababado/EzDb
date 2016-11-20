@@ -1,4 +1,8 @@
-package com.sababado.ezdb;
+package com.sababado.ezdb.models;
+
+import com.sababado.ezdb.Column;
+import com.sababado.ezdb.DbHelper;
+import com.sababado.ezdb.TableName;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,7 +11,7 @@ import java.sql.SQLException;
  * Created by robert on 8/25/16.
  */
 @TableName("Pub")
-public class Pub extends DbRecord {
+public class Pub extends AbstractDbRecord {
     public static final String FULL_CODE = "fullCode";
     public static final String ROOT_CODE = "rootCode";
     public static final String CODE = "code";

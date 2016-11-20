@@ -1,5 +1,6 @@
 package com.sababado.ezdb;
 
+import com.sababado.ezdb.models.Pub;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
