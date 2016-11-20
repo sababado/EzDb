@@ -202,7 +202,7 @@ public class DbHelper {
         return columnName;
     }
 
-    static TableName getTableName(Class cls) {
+    public static TableName getTableName(Class cls) {
         TableName tableName = classTableNameMap.get(cls);
         if (tableName != null) {
             return tableName;
