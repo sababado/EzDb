@@ -144,7 +144,7 @@ public class DbHelper {
 
     static String getSelectColumns(Class cls, boolean isFk, String tableName, boolean allowIgnores) {
         String columns = "";
-        Field[] fields = cls.getDeclaredFields();
+        Field[] fields = getAllFields(cls);
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             String columnValue = getColumnValue(field, false, tableName, allowIgnores);
@@ -164,6 +164,17 @@ public class DbHelper {
             columns = columns.substring(0, columns.length() - 1);
         }
         return columns;
+    }
+
+    static Field[] getAllFields(Class cls) {
+        ArrayList<Field> allFields = new ArrayList<>();
+        do {
+            Field[] fields = cls.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                allFields.add(i, fields[i]);
+            }
+        } while ((cls = cls.getSuperclass()) != null);
+        return allFields.toArray(new Field[allFields.size()]);
     }
 
     /**
