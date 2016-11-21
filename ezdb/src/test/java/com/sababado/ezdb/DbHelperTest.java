@@ -47,7 +47,7 @@ public class DbHelperTest {
 
     @Test
     public void testGetSelectColumnsFk() {
-        String expected = "PubDevices.deviceId,Device.deviceToken AS ddeviceToken,Device.lastNotificationFail AS dlastNotificationFail,Device.keepAlive AS dkeepAlive,PubDevices.pubId,Pub.fullCode AS pfullCode,Pub.rootCode AS prootCode,Pub.code AS pcode,Pub.version AS pversion,Pub.isActive AS pisActive,Pub.pubType AS ppubType,Pub.title AS ptitle,Pub.readableTitle AS preadableTitle,Pub.lastUpdated AS plastUpdated";
+        String expected = "PubDevices.id,PubDevices.deviceId,Device.id AS did,Device.deviceToken AS ddeviceToken,Device.lastNotificationFail AS dlastNotificationFail,Device.keepAlive AS dkeepAlive,PubDevices.pubId,Pub.id AS pid,Pub.fullCode AS pfullCode,Pub.rootCode AS prootCode,Pub.code AS pcode,Pub.version AS pversion,Pub.isActive AS pisActive,Pub.pubType AS ppubType,Pub.title AS ptitle,Pub.readableTitle AS preadableTitle,Pub.lastUpdated AS plastUpdated";
         String actual = DbHelper.getSelectColumns(PubDevices.class, true, DbHelper.getTableName(PubDevices.class), true, true).trim();
         assertEquals(expected, actual);
     }

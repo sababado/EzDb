@@ -13,7 +13,7 @@ ext {
     gitUrl = 'https://github.com/sababado/EzDb.git'
     githubRepository= 'sababado/EzDb'
 
-    libraryVersion = '1.0.3'
+    libraryVersion = '1.0.4'
 
     developerId = 'rat141312'
     developerName = 'Robert Szabo'

@@ -77,13 +77,9 @@ public class DbHelper {
     }
 
     public static <T extends DbRecord> List<T> getList(Connection connection, Class<T> cls, String where) {
-        return getList(connection, cls, false, where);
-    }
-
-    public static <T extends DbRecord> List<T> getList(Connection connection, Class<T> cls, boolean hasFk, String where) {
         String query = classQueryMap.get(cls);
         if (query == null) {
-            query = buildQuery(cls, hasFk);
+            query = buildQuery(cls);
             classQueryMap.put(cls, query);
         }
         if (!StringUtils.isEmptyOrWhitespace(where)) {
@@ -118,8 +114,9 @@ public class DbHelper {
         return query + " " + where;
     }
 
-    static String buildQuery(Class cls, boolean hasFk) {
+    static String buildQuery(Class cls) {
         TableName tableName = getTableName(cls);
+        boolean hasFk = !StringUtils.isEmptyOrWhitespace(tableName.joinTable());
         String selectColumns = getSelectColumns(cls, hasFk, tableName, true, true);
         String query = "select " + selectColumns +
                 " from " + tableName.value();
@@ -147,7 +144,7 @@ public class DbHelper {
         Field[] fields = getAllFields(cls);
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
-            String columnValue = getColumnValue(field, isFk, tableName, allowIgnores, isSelectStatement);
+            String columnValue = getColumnValue(field, false, tableName, allowIgnores, isSelectStatement);
             if (columnValue != null) {
                 if (columnValue.equals(Column.FK_COL_NAME)) {
                     TableName foreignTableName = getTableName(field.getType());
