@@ -2,6 +2,7 @@ package com.sababado.ezdb;
 
 
 import com.sababado.ezdb.models.Pub;
+import com.sababado.ezdb.models.PubDevices;
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;
@@ -16,17 +17,17 @@ public class DbHelperTest {
     @Test
     public void testGetColumnValue() throws NoSuchFieldException {
         Field field = Pub.class.getDeclaredField("id");
-        String actual = DbHelper.getColumnValue(field, false, DbHelper.getTableName(Pub.class).value(), true);
-        String expected = "Pub.id";
+        String actual = DbHelper.getColumnValue(field, false, DbHelper.getTableName(Pub.class), true, true);
+        String expected = "Pub.id AS pid";
         assertEquals(expected, actual);
 
         field = Pub.class.getDeclaredField("id");
-        actual = DbHelper.getColumnValue(field, true, DbHelper.getTableName(Pub.class).value(), true);
+        actual = DbHelper.getColumnValue(field, true, DbHelper.getTableName(Pub.class), true, true);
         expected = null;
         assertEquals(expected, actual);
 
         field = Pub.class.getDeclaredField(Pub.LAST_UPDATED);
-        actual = DbHelper.getColumnValue(field, true, DbHelper.getTableName(Pub.class).value(), false);
+        actual = DbHelper.getColumnValue(field, true, DbHelper.getTableName(Pub.class), false, true);
         expected = null;
         assertEquals(expected, actual);
 //
@@ -39,8 +40,15 @@ public class DbHelperTest {
 
     @Test
     public void testGetSelectColumns() {
-        String expected = "Pub.id,Pub.fullCode,Pub.rootCode,Pub.code,Pub.version,Pub.isActive,Pub.pubType,Pub.title,Pub.readableTitle,Pub.lastUpdated".toLowerCase();
-        String actual = DbHelper.getSelectColumns(Pub.class, false, DbHelper.getTableName(Pub.class).value(), true).trim().toLowerCase();
+        String expected = "pub.id as pid,pub.fullcode as pfullcode,pub.rootcode as prootcode,pub.code as pcode,pub.version as pversion,pub.isactive as pisactive,pub.pubtype as ppubtype,pub.title as ptitle,pub.readabletitle as preadabletitle,pub.lastupdated as plastupdated".toLowerCase();
+        String actual = DbHelper.getSelectColumns(Pub.class, false, DbHelper.getTableName(Pub.class), true, true).trim().toLowerCase();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetSelectColumnsFk() {
+        String expected = "PubDevices.deviceId,Device.deviceToken AS ddeviceToken,Device.lastNotificationFail AS dlastNotificationFail,Device.keepAlive AS dkeepAlive,PubDevices.pubId,Pub.fullCode AS pfullCode,Pub.rootCode AS prootCode,Pub.code AS pcode,Pub.version AS pversion,Pub.isActive AS pisActive,Pub.pubType AS ppubType,Pub.title AS ptitle,Pub.readableTitle AS preadableTitle,Pub.lastUpdated AS plastUpdated";
+        String actual = DbHelper.getSelectColumns(PubDevices.class, true, DbHelper.getTableName(PubDevices.class), true, true).trim();
         assertEquals(expected, actual);
     }
 
@@ -89,6 +97,11 @@ public class DbHelperTest {
             public Class<? extends Annotation> annotationType() {
                 return null;
             }
+
+            @Override
+            public String alias() {
+                return null;
+            }
         };
 
         String expected = " join Single where Name.singleId = Single.id";
@@ -108,6 +121,11 @@ public class DbHelperTest {
 
             @Override
             public Class<? extends Annotation> annotationType() {
+                return null;
+            }
+
+            @Override
+            public String alias() {
                 return null;
             }
         };

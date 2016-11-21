@@ -16,4 +16,10 @@ public @interface TableName {
      * @return A comma separated string denoting multiple join tables.
      */
     String joinTable() default "";
+
+    /**
+     * If defined then this will be prefixed to all column names in queries.
+     * @return
+     */
+    String alias() default "";
 }

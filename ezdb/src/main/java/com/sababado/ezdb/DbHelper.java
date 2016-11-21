@@ -120,7 +120,7 @@ public class DbHelper {
 
     static String buildQuery(Class cls, boolean hasFk) {
         TableName tableName = getTableName(cls);
-        String selectColumns = getSelectColumns(cls, hasFk, tableName.value(), true);
+        String selectColumns = getSelectColumns(cls, hasFk, tableName, true, true);
         String query = "select " + selectColumns +
                 " from " + tableName.value();
         if (!StringUtils.isEmptyOrWhitespace(tableName.joinTable())) {
@@ -142,18 +142,18 @@ public class DbHelper {
         return clause;
     }
 
-    static String getSelectColumns(Class cls, boolean isFk, String tableName, boolean allowIgnores) {
+    static String getSelectColumns(Class cls, boolean isFk, TableName tableName, boolean allowIgnores, boolean isSelectStatement) {
         String columns = "";
         Field[] fields = getAllFields(cls);
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
-            String columnValue = getColumnValue(field, false, tableName, allowIgnores);
+            String columnValue = getColumnValue(field, isFk, tableName, allowIgnores, isSelectStatement);
             if (columnValue != null) {
                 if (columnValue.equals(Column.FK_COL_NAME)) {
-                    String foreignTableName = getTableName(field.getType()).value();
-                    columns += tableName + "." + foreignTableName.toLowerCase() + "Id,";
+                    TableName foreignTableName = getTableName(field.getType());
+                    columns += tableName.value() + "." + foreignTableName.value().toLowerCase() + "Id,";
                     if (isFk) {
-                        columns += getSelectColumns(field.getType(), true, foreignTableName, true) + ",";
+                        columns += getSelectColumns(field.getType(), true, foreignTableName, true, isSelectStatement) + ",";
                     }
                 } else {
                     columns += columnValue + ",";
@@ -186,7 +186,7 @@ public class DbHelper {
      * @param allowIgnores if false, any ignore flag will render this column value null.
      * @return
      */
-    static String getColumnValue(Field field, boolean fromFk, String tableName, boolean allowIgnores) {
+    static String getColumnValue(Field field, boolean fromFk, TableName tableName, boolean allowIgnores, boolean isSelectStatement) {
         String columnName = null;
         Annotation[] annotations = field.getDeclaredAnnotations();
         if (annotations != null) {
@@ -200,7 +200,11 @@ public class DbHelper {
                         if (fromFk && columnName.equals(Column.ID)) {
                             columnName = null;
                         } else {
-                            columnName = tableName + "." + columnName;
+                            String tColName = columnName;
+                            columnName = tableName.value() + "." + tColName;
+                            if (isSelectStatement && !StringUtils.isEmptyOrWhitespace(tableName.alias())) {
+                                columnName += " AS " + tableName.alias() + tColName;
+                            }
                         }
                     }
                     break;

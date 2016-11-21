@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 /**
  * Created by robert on 8/31/16.
  */
-@TableName("Device")
+@TableName(value = "Device", alias = "d")
 public class Device extends DbRecord {
     public static final String DEVICE_TOKEN = "deviceToken";
     public static final String LAST_NOTIFICATION_FAIL = "lastNotificationFail";

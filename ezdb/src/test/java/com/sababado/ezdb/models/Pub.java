@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * Created by robert on 8/25/16.
  */
-@TableName("Pub")
+@TableName(value = "Pub", alias = "p")
 public class Pub extends AbstractDbRecord {
     public static final String FULL_CODE = "fullCode";
     public static final String ROOT_CODE = "rootCode";

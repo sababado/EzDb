@@ -36,11 +36,12 @@ public abstract class DbRecord {
             return statement;
         }
 
-        String tableName = DbHelper.getTableName(cls).value();
+        TableName tableName = DbHelper.getTableName(cls);
+        String tableNameStr = tableName.value();
         // TODO make that ID more generic, it doesn't support custom ID field names.
-        String fields = DbHelper.getSelectColumns(cls, false, tableName, false).replace(tableName + "." + Column.ID + ",", "");
+        String fields = DbHelper.getSelectColumns(cls, false, tableName, false, false).replace(tableNameStr + "." + Column.ID + ",", "");
         int numFields = fields.split(",").length;
-        statement = "INSERT INTO " + tableName +
+        statement = "INSERT INTO " + tableNameStr +
                 " (" + fields + ") " +
                 "VALUES (" + StringUtils.generateQuestionString(numFields) + ");";
 
@@ -54,14 +55,15 @@ public abstract class DbRecord {
             return statement;
         }
 
-        String tableName = DbHelper.getTableName(cls).value();
-        String fields = DbHelper.getSelectColumns(cls, false, tableName, false)
-                .replace(tableName + "." + Column.ID + ",", "")
+        TableName tableName = DbHelper.getTableName(cls);
+        String tableNameStr = tableName.value();
+        String fields = DbHelper.getSelectColumns(cls, false, tableName, false, false)
+                .replace(tableNameStr + "." + Column.ID + ",", "")
                 .replace(",", "=?,")
                 + "=?";
-        statement = "UPDATE " + tableName +
+        statement = "UPDATE " + tableNameStr +
                 " SET " + fields +
-                " WHERE " + tableName + "." + Column.ID + "=?;";
+                " WHERE " + tableNameStr + "." + Column.ID + "=?;";
 
         updateStatements.put(cls, statement);
         return statement;
